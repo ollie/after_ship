@@ -1,5 +1,7 @@
 # AfterShip
 
+[![Build Status](https://travis-ci.org/ollie/after_ship.svg?branch=master)](https://travis-ci.org/ollie/after_ship)
+
 A smallish library to talking to AfterShip via v3 API.
 
 You will need an AfterShip API key, see here https://www.aftership.com/docs/api/3.0.
