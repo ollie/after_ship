@@ -20,64 +20,74 @@ And then execute:
 
 Init the client:
 
-    client = AfterShip.new(api_key: 'your-aftership-api-key')
+```ruby
+client = AfterShip.new(api_key: 'your-aftership-api-key')
+```
 
 Get a list of trackings
 https://www.aftership.com/docs/api/3.0/tracking/get-trackings
 
-    client.trackings
+```ruby
+client.trackings
 
-    # Will return JSON:
+# Will return JSON:
 
-    {
-      ...,
-      data: {
+{
+  ...,
+  data: {
+    ...
+    trackings: [
+      {
         ...
-        trackings: [
-          {
-            ...
-          },
-          ...
-        ]
-      }
-    }
+      },
+      ...
+    ]
+  }
+}
+```
 
 Get a tracking
 https://www.aftership.com/docs/api/3.0/tracking/get-trackings-slug-tracking_number
 
-    client.tracking('tracking-number', 'ups')
+```ruby
+client.tracking('tracking-number', 'ups')
 
-    # Will return JSON or raise AfterShip::ResourceNotFoundError if not exists:
+# Will return JSON or raise AfterShip::ResourceNotFoundError if not exists:
 
-    {
-      ...,
-      data: {
-        tracking: {
-          ...
-        }
-      }
+{
+  ...,
+  data: {
+    tracking: {
+      ...
     }
+  }
+}
+```
 
 Create a new tracking
 https://www.aftership.com/docs/api/3.0/tracking/post-trackings
 
-    client.create_tracking('tracking-number', 'ups', order_id: 'external-id')
+```ruby
+client.create_tracking('tracking-number', 'ups', order_id: 'external-id')
 
-    # Will return JSON or raise AfterShip::InvalidArgumentError if it exists:
+# Will return JSON or raise AfterShip::InvalidArgumentError if it exists:
 
-    {
-      ...,
-      data: {
-        tracking: {
-          ...
-        }
-      }
+{
+  ...,
+  data: {
+    tracking: {
+      ...
     }
+  }
+}
+```
 
 Update a tracking
 https://www.aftership.com/docs/api/3.0/tracking/put-trackings-slug-tracking_number
 
-    client.update_tracking('tracking-number', 'ups', order_id: 'external-id')
+```ruby
+client.update_tracking('tracking-number', 'ups', order_id: 'external-id')
+```
 
 ## Contributing
 
