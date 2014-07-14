@@ -10,7 +10,9 @@ you may want to drop in your favorite JSON engine.
 
 Add this line to your application's Gemfile:
 
-    gem 'after_ship', git: 'https://github.com/ollie/after_ship.git'
+```ruby
+gem 'after_ship', git: 'https://github.com/ollie/after_ship.git'
+```
 
 And then execute:
 
