@@ -1,0 +1,18 @@
+language: ruby
+
+rvm:
+  - 2.1.2
+  - 1.9.3
+  - jruby-19mode
+
+branches:
+  only:
+    - master
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+
+install: "bundle --jobs 4"
+script: "bundle exec rspec"
