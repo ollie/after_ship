@@ -2,6 +2,8 @@ require 'typhoeus'
 require 'multi_json'
 
 require 'after_ship/version'
+require 'after_ship/tracking'
+require 'after_ship/checkpoint'
 
 # Init the client:
 #
@@ -113,7 +115,8 @@ class AfterShip
 
     url = "#{ TRACKINGS_ENDPOINT }/#{ courier }/#{ tracking_number }"
 
-    request_response(url, {}, :get)
+    response = request_response(url, {}, :get)
+    Tracking.new(response[:data])
   end
 
   # Create a new tracking.

@@ -10,16 +10,28 @@ WebMock.stub_request(
     body:   %({"meta":{"code":200}})
   )
 
-# tracking
+# tracking with real data
 WebMock.stub_request(
   :get,
-  %r{https://api.aftership.com/v3/trackings/ups/.+}
+  'https://api.aftership.com/v3/trackings/ups/real'
   ).with(
     body:    '{}',
     headers: { 'Aftership-Api-Key' => 'key' }
   ).to_return(
     status: 200,
-    body:   %({"meta":{"code":200}})
+    body:   File.open('spec/requests/tracking/real.json')
+  )
+
+# tracking
+WebMock.stub_request(
+  :get,
+  'https://api.aftership.com/v3/trackings/ups/ABC123'
+  ).with(
+    body:    '{}',
+    headers: { 'Aftership-Api-Key' => 'key' }
+  ).to_return(
+    status: 200,
+    body:   %({"meta":{"code":200},"data":{"tracking":{}}})
   )
 
 [201, 400, 401, 402, 404, 409, 429, 500, 502, 503, 504, 666].each do |code|
@@ -31,7 +43,7 @@ WebMock.stub_request(
       headers: { 'Aftership-Api-Key' => 'key' }
     ).to_return(
       status: 200,
-      body:   %({"meta":{"code":#{code}}})
+      body:   %({"meta":{"code":#{code}},"data":{"tracking":{}}})
     )
 end
 
