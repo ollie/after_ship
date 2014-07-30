@@ -1,6 +1,8 @@
 require 'typhoeus'
 require 'multi_json'
 
+require 'attributes'
+require 'date_utils'
 require 'after_ship/version'
 require 'after_ship/tracking'
 require 'after_ship/checkpoint'

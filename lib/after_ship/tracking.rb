@@ -2,39 +2,7 @@ class AfterShip
   # Wrapper object for AfterShip tracking:
   # https://www.aftership.com/docs/api/3.0/tracking/get-trackings-slug-tracking_number
   class Tracking
-    # Date:
-    #
-    # +YYYY-MM-DD+
-    DATE_REGEX = /
-                   \A
-                   \d{4}-\d{2}-\d{2}
-                   \Z
-                 /x
-
-    # Datetime without zone:
-    #
-    # +YYYY-MM-DDTHH:MM:SS+
-    DATETIME_REGEX = /
-                       \A
-                       \d{4}-\d{2}-\d{2}
-                       T
-                       \d{2}:\d{2}:\d{2}
-                       \Z
-                     /x
-
-    # Datetime with zone:
-    #
-    # +YYYY-MM-DDTHH:MM:SSZ+
-    # +YYYY-MM-DDTHH:MM:SS+HH:MM+
-    # +YYYY-MM-DDTHH:MM:SS-HH:MM+
-    DATETIME_WITH_ZONE_REGEX = /
-                                 \A
-                                 \d{4}-\d{2}-\d{2}
-                                 T
-                                 \d{2}:\d{2}:\d{2}
-                                 (Z|[+-]\d{2}:\d{2})
-                                 \Z
-                               /x
+    include Attributes
 
     # Date and time of the tracking created.
     #
@@ -169,12 +137,12 @@ class AfterShip
     # @return [Array<Checkpoint>]
     attr_reader :checkpoints
 
-    # Better interface for API data response.
+    # Better interface for a tracking.
     #
-    # @param data [Hash] AfterShip API data response
+    # @param data [Hash] tracking hash
     def initialize(data)
       tracking_data = data.fetch(:tracking)
-      load_data(tracking_data)
+      load_attributes(tracking_data)
     end
 
     # Date and time of the tracking created.
@@ -193,47 +161,16 @@ class AfterShip
 
     # Expected delivery date (if any).
     #
-    # Empty String,
-    # YYYY-MM-DD,
-    # YYYY-MM-DDTHH:MM:SS, or
-    # YYYY-MM-DDTHH:MM:SSZ,
-    # YYYY-MM-DDTHH:MM:SS+HH:MM,
-    # YYYY-MM-DDTHH:MM:SS-HH:MM.
-    #
     # @return [DateTime]
     def expected_delivery=(value)
-      new_value = case value
-                  when nil
-                    nil
-                  when DATE_REGEX
-                    Date.parse(value)
-                  when DATETIME_REGEX, DATETIME_WITH_ZONE_REGEX
-                    DateTime.parse(value)
-                  else
-                    fail ArgumentError,
-                         "Invalid expected_delivery date #{ value.inspect }"
-                  end
-
-      @expected_delivery = new_value
+      @expected_delivery = DateUtils.parse(value)
     end
 
     # Array of Checkpoint describes the checkpoint information.
     #
     # @return [Array<Checkpoint>]
     def checkpoints=(value)
-      @checkpoints = value
-    end
-
-    protected
-
-    # Load instance variables from the response.
-    #
-    # @param tracking_data [Hash]
-    def load_data(tracking_data)
-      tracking_data.each do |attribute, value|
-        setter = "#{ attribute }="
-        send(setter, value) if respond_to?(setter)
-      end
+      @checkpoints = value.map { |data| Checkpoint.new(data) }
     end
   end
 end
