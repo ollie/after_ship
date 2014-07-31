@@ -27,67 +27,62 @@ RSpec.describe AfterShip::Tracking do
   end
 
   it 'has courier' do
-    data = {
-      tracking: {
-        slug: 'ups'
-      }
-    }
-
+    data     = { slug: 'ups' }
     tracking = AfterShip::Tracking.new(data)
     expect(tracking.courier).to eq('UPS')
   end
 
   context 'status' do
     it 'Pending' do
-      data     = { tracking: { tag: 'Pending' } }
+      data     = { tag: 'Pending' }
       tracking = AfterShip::Tracking.new(data)
       expect(tracking.status).to eq('Pending')
     end
 
     it 'InfoReceived' do
-      data     = { tracking: { tag: 'InfoReceived' } }
+      data     = { tag: 'InfoReceived' }
       tracking = AfterShip::Tracking.new(data)
       expect(tracking.status).to eq('Info Received')
     end
 
     it 'InTransit' do
-      data     = { tracking: { tag: 'InTransit' } }
+      data     = { tag: 'InTransit' }
       tracking = AfterShip::Tracking.new(data)
       expect(tracking.status).to eq('In Transit')
     end
 
     it 'OutForDelivery' do
-      data     = { tracking: { tag: 'OutForDelivery' } }
+      data     = { tag: 'OutForDelivery' }
       tracking = AfterShip::Tracking.new(data)
       expect(tracking.status).to eq('Out for Delivery')
     end
 
     it 'AttemptFail' do
-      data     = { tracking: { tag: 'AttemptFail' } }
+      data     = { tag: 'AttemptFail' }
       tracking = AfterShip::Tracking.new(data)
       expect(tracking.status).to eq('Attempt Failed')
     end
 
     it 'Delivered' do
-      data     = { tracking: { tag: 'Delivered' } }
+      data     = { tag: 'Delivered' }
       tracking = AfterShip::Tracking.new(data)
       expect(tracking.status).to eq('Delivered')
     end
 
     it 'Exception' do
-      data     = { tracking: { tag: 'Exception' } }
+      data     = { tag: 'Exception' }
       tracking = AfterShip::Tracking.new(data)
       expect(tracking.status).to eq('Exception')
     end
 
     it 'Expired' do
-      data     = { tracking: { tag: 'Expired' } }
+      data     = { tag: 'Expired' }
       tracking = AfterShip::Tracking.new(data)
       expect(tracking.status).to eq('Expired')
     end
 
     it 'error' do
-      data = { tracking: { tag: 'error' } }
+      data = { tag: 'error' }
       expect { AfterShip::Tracking.new(data) }.to raise_error(KeyError)
     end
   end

@@ -8,23 +8,21 @@ RSpec.describe AfterShip::Tracking do
   context 'Attributes' do
     before do
       data = {
-        tracking: {
-          checkpoints: [
-            {
-              slug:             'ups',
-              city:             'Mumbai',
-              created_at:       '2014-05-06T08:03:52+00:00',
-              country_name:     'IN',
-              message:          'BILLING INFORMATION RECEIVED',
-              country_iso3:     'IND',
-              tag:              'InfoReceived',
-              checkpoint_time:  '2014-05-01T10:33:38',
-              coordinates:      [],
-              state:            nil,
-              zip:              nil
-            }
-          ]
-        }
+        checkpoints: [
+          {
+            slug:             'ups',
+            city:             'Mumbai',
+            created_at:       '2014-05-06T08:03:52+00:00',
+            country_name:     'IN',
+            message:          'BILLING INFORMATION RECEIVED',
+            country_iso3:     'IND',
+            tag:              'InfoReceived',
+            checkpoint_time:  '2014-05-01T10:33:38',
+            coordinates:      [],
+            state:            nil,
+            zip:              nil
+          }
+        ]
       }
 
       tracking    = AfterShip::Tracking.new(data)

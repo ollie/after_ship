@@ -160,8 +160,7 @@ class AfterShip
     #
     # @param data [Hash] tracking hash
     def initialize(data)
-      tracking_data = data.fetch(:tracking)
-      load_attributes(tracking_data)
+      load_attributes(data)
     end
 
     # Date and time of the tracking created.

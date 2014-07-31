@@ -7,7 +7,7 @@ WebMock.stub_request(
     headers: { 'Aftership-Api-Key' => 'key' }
   ).to_return(
     status: 200,
-    body:   %({"meta":{"code":200}})
+    body:   %({"meta":{"code":200},"data":{"trackings":[{"slug":"ups"}]}})
   )
 
 # tracking with real delivered data (simple)
@@ -67,7 +67,7 @@ WebMock.stub_request(
       headers: { 'Aftership-Api-Key' => 'key' }
     ).to_return(
       status: 200,
-      body:   %({"meta":{"code":#{code}},"data":{"tracking":{}}})
+      body:   %({"meta":{"code":#{code}},"data":{"tracking":{"slug":"ups"}}})
     )
 end
 
@@ -80,7 +80,7 @@ WebMock.stub_request(
     headers: { 'Aftership-Api-Key' => 'key' }
   ).to_return(
     status: 200,
-    body:   %({"meta":{"code":200}})
+    body:   %({"meta":{"code":200},"data":{"tracking":{"slug":"ups"}}})
   )
 
 WebMock.stub_request(
@@ -91,7 +91,7 @@ WebMock.stub_request(
     headers: { 'Aftership-Api-Key' => 'key' }
   ).to_return(
     status: 200,
-    body:   %({"meta":{"code":200}})
+    body:   %({"meta":{"code":200},"data":{"tracking":{"slug":"ups"}}})
   )
 
 # update_tracking
@@ -104,7 +104,7 @@ WebMock.stub_request(
     headers: { 'Aftership-Api-Key' => 'key' }
   ).to_return(
     status: 200,
-    body:   %({"meta":{"code":200}})
+    body:   %({"meta":{"code":200},"data":{"tracking":{"slug":"ups"}}})
   )
 
 ## App-specific AfterShip tests
@@ -118,7 +118,7 @@ WebMock.stub_request(
     headers: { 'Aftership-Api-Key' => 'key' }
   ).to_return(
     status: 200,
-    body:   %({"meta":{"code":200}})
+    body:   %({"meta":{"code":200},"data":{"tracking":{"slug":"ups"}}})
   )
 
 WebMock.stub_request(
