@@ -22,7 +22,12 @@ class AfterShip
     # Unique code of courier.
     #
     # @return [String]
-    attr_accessor :slug
+    attr_reader :slug
+
+    # Courier name
+    #
+    # @return [String]
+    attr_accessor :courier
 
     # Whether or not AfterShip will continue tracking the shipments. Value is
     # +false+ when status is +Delivered+ or +Expired+.
@@ -157,6 +162,15 @@ class AfterShip
     # @return [DateTime]
     def updated_at=(value)
       @updated_at = DateTime.parse(value)
+    end
+
+    # Unique code of courier.
+    #
+    # @return [String]
+    def slug=(value)
+      @slug        = value
+      self.courier = value.upcase
+      @slug
     end
 
     # Expected delivery date (if any).
