@@ -75,4 +75,59 @@ RSpec.describe AfterShip::Tracking do
       expect(@checkpoint.zip).to be_nil
     end
   end
+
+  context 'status' do
+    it 'Pending' do
+      data       = { tag: 'Pending' }
+      checkpoint = AfterShip::Checkpoint.new(data)
+      expect(checkpoint.status).to eq('Pending')
+    end
+
+    it 'InfoReceived' do
+      data       = { tag: 'InfoReceived' }
+      checkpoint = AfterShip::Checkpoint.new(data)
+      expect(checkpoint.status).to eq('Info Received')
+    end
+
+    it 'InTransit' do
+      data       = { tag: 'InTransit' }
+      checkpoint = AfterShip::Checkpoint.new(data)
+      expect(checkpoint.status).to eq('In Transit')
+    end
+
+    it 'OutForDelivery' do
+      data       = { tag: 'OutForDelivery' }
+      checkpoint = AfterShip::Checkpoint.new(data)
+      expect(checkpoint.status).to eq('Out for Delivery')
+    end
+
+    it 'AttemptFail' do
+      data       = { tag: 'AttemptFail' }
+      checkpoint = AfterShip::Checkpoint.new(data)
+      expect(checkpoint.status).to eq('Attempt Failed')
+    end
+
+    it 'Delivered' do
+      data       = { tag: 'Delivered' }
+      checkpoint = AfterShip::Checkpoint.new(data)
+      expect(checkpoint.status).to eq('Delivered')
+    end
+
+    it 'Exception' do
+      data       = { tag: 'Exception' }
+      checkpoint = AfterShip::Checkpoint.new(data)
+      expect(checkpoint.status).to eq('Exception')
+    end
+
+    it 'Expired' do
+      data       = { tag: 'Expired' }
+      checkpoint = AfterShip::Checkpoint.new(data)
+      expect(checkpoint.status).to eq('Expired')
+    end
+
+    it 'error' do
+      data = { tag: 'error' }
+      expect { AfterShip::Checkpoint.new(data) }.to raise_error(KeyError)
+    end
+  end
 end

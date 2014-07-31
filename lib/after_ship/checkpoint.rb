@@ -45,7 +45,21 @@ class AfterShip
     # Should always be available.
     #
     # @return [String]
-    attr_accessor :tag
+    attr_reader :tag
+
+    # Same as tag, except human-friendly:
+    #
+    # * +Pending+ => +Pending+
+    # * +InfoReceived+ => +Info Received+
+    # * +InTransit+ => +In Transit+
+    # * +OutForDelivery+ => +Out For Delivery+
+    # * +AttemptFail+ => +Attempt Failed+
+    # * +Delivered+ => +Delivered+
+    # * +Exception+ => +Exception+
+    # * +Expired+ => +Expired+
+    #
+    # @return [String]
+    attr_accessor :status
 
     # Date and time of the checkpoint, provided by courier.
     #
@@ -80,6 +94,17 @@ class AfterShip
     # @return [DateTime]
     def created_at=(value)
       @created_at = DateUtils.parse(value)
+    end
+
+    # Status of the checkpoint.
+    #
+    # Should always be available.
+    #
+    # @return [String]
+    def tag=(value)
+      @tag        = value
+      self.status = TAG_STATUS.fetch(value)
+      @tag
     end
 
     # Date and time of the checkpoint, provided by courier.

@@ -4,18 +4,6 @@ class AfterShip
   class Tracking
     include Attributes
 
-    # Tag to human-friendly status conversion
-    TAG_STATUS = {
-      'Pending'        => 'Pending',
-      'InfoReceived'   => 'Info Received',
-      'InTransit'      => 'In Transit',
-      'OutForDelivery' => 'Out for Delivery',
-      'AttemptFail'    => 'Attempt Failed',
-      'Delivered'      => 'Delivered',
-      'Exception'      => 'Exception',
-      'Expired'        => 'Expired'
-    }
-
     # Date and time of the tracking created.
     #
     # @return [DateTime]

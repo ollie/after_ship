@@ -87,7 +87,7 @@ RSpec.describe AfterShip::Tracking do
     end
 
     it 'error' do
-      data     = { tracking: { tag: 'error' } }
+      data = { tracking: { tag: 'error' } }
       expect { AfterShip::Tracking.new(data) }.to raise_error(KeyError)
     end
   end

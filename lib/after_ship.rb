@@ -89,6 +89,18 @@ class AfterShip
     symbolize_keys: true # Symbol keys to string keys
   }
 
+  # Tag to human-friendly status conversion
+  TAG_STATUS = {
+    'Pending'        => 'Pending',
+    'InfoReceived'   => 'Info Received',
+    'InTransit'      => 'In Transit',
+    'OutForDelivery' => 'Out for Delivery',
+    'AttemptFail'    => 'Attempt Failed',
+    'Delivered'      => 'Delivered',
+    'Exception'      => 'Exception',
+    'Expired'        => 'Expired'
+  }
+
   attr_reader :api_key
 
   # @param options [Hash]
