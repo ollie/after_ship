@@ -4,6 +4,18 @@ class AfterShip
   class Tracking
     include Attributes
 
+    # Tag to human-friendly status conversion
+    TAG_STATUS = {
+      'Pending'        => 'Pending',
+      'InfoReceived'   => 'Info Received',
+      'InTransit'      => 'In Transit',
+      'OutForDelivery' => 'Out for Delivery',
+      'AttemptFail'    => 'Attempt Failed',
+      'Delivered'      => 'Delivered',
+      'Exception'      => 'Exception',
+      'Expired'        => 'Expired'
+    }
+
     # Date and time of the tracking created.
     #
     # @return [DateTime]
@@ -125,7 +137,21 @@ class AfterShip
     # See status definition https://www.aftership.com/docs/api/4/delivery-status.
     #
     # @return [String]
-    attr_accessor :tag
+    attr_reader :tag
+
+    # Same as tag, except human-friendly:
+    #
+    # * +Pending+ => +Pending+
+    # * +InfoReceived+ => +Info Received+
+    # * +InTransit+ => +In Transit+
+    # * +OutForDelivery+ => +Out For Delivery+
+    # * +AttemptFail+ => +Attempt Failed+
+    # * +Delivered+ => +Delivered+
+    # * +Exception+ => +Exception+
+    # * +Expired+ => +Expired+
+    #
+    # @return [String]
+    attr_accessor :status
 
     # Title of the tracking.
     #
@@ -178,6 +204,20 @@ class AfterShip
     # @return [DateTime]
     def expected_delivery=(value)
       @expected_delivery = DateUtils.parse(value)
+    end
+
+    # Current status of tracking.
+    #
+    # Value: +Pending+, +InfoReceived+, +InTransit+, +OutForDelivery+,
+    # +AttemptFail+, +Delivered+, +Exception+, +Expired+.
+    #
+    # See status definition https://www.aftership.com/docs/api/4/delivery-status.
+    #
+    # @return [String]
+    def tag=(value)
+      @tag        = value
+      self.status = TAG_STATUS.fetch(value)
+      @tag
     end
 
     # Array of Checkpoint describes the checkpoint information.
