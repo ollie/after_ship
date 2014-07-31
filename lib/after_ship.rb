@@ -67,6 +67,10 @@ require 'after_ship/checkpoint'
 # https://www.aftership.com/docs/api/3.0/tracking/put-trackings-slug-tracking_number
 #
 #   client.update_tracking('tracking-number', 'ups', order_id: 'external-id')
+#
+# client.tracking('9405903699300211343566', 'usps') # In transit
+# client.tracking('1ZA2207X6794165804', 'ups')      # Delivered, wild
+# client.tracking('1ZA2207X6791425225', 'ups')      # Delivered, ok
 class AfterShip
   class Error                   < StandardError; end
   class InvalidJSONDataError    < Error; end # 400

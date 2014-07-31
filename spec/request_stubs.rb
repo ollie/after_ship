@@ -10,16 +10,40 @@ WebMock.stub_request(
     body:   %({"meta":{"code":200}})
   )
 
-# tracking with real data
+# tracking with real delivered data (simple)
 WebMock.stub_request(
   :get,
-  'https://api.aftership.com/v3/trackings/ups/real'
+  'https://api.aftership.com/v3/trackings/ups/delivered-ok'
   ).with(
     body:    '{}',
     headers: { 'Aftership-Api-Key' => 'key' }
   ).to_return(
     status: 200,
-    body:   File.open('spec/requests/tracking/real.json')
+    body:   File.open('spec/requests/tracking/delivered_ok.json')
+  )
+
+# tracking with real delivered data (a lot of checkpoints)
+WebMock.stub_request(
+  :get,
+  'https://api.aftership.com/v3/trackings/ups/delivered-wild'
+  ).with(
+    body:    '{}',
+    headers: { 'Aftership-Api-Key' => 'key' }
+  ).to_return(
+    status: 200,
+    body:   File.open('spec/requests/tracking/delivered_wild.json')
+  )
+
+# tracking with real in-transit data
+WebMock.stub_request(
+  :get,
+  'https://api.aftership.com/v3/trackings/usps/in-transit'
+  ).with(
+    body:    '{}',
+    headers: { 'Aftership-Api-Key' => 'key' }
+  ).to_return(
+    status: 200,
+    body:   File.open('spec/requests/tracking/in_transit.json')
   )
 
 # tracking

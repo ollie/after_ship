@@ -1,0 +1,263 @@
+{
+  "meta": {
+    "code": 200
+  },
+  "data": {
+    "tracking": {
+      "created_at": "2014-05-05T13:50:27+00:00",
+      "updated_at": "2014-07-18T08:04:49+00:00",
+      "tracking_number": "1ZA2207X6791425225",
+      "slug": "ups",
+      "active": false,
+      "custom_fields": {
+      },
+      "customer_name": null,
+      "destination_country_iso3": "USA",
+      "emails": [
+
+      ],
+      "expected_delivery": null,
+      "order_id": "PL-55120855",
+      "order_id_path": null,
+      "origin_country_iso3": "IND",
+      "shipment_package_count": 0,
+      "shipment_type": "EXPEDITED",
+      "signed_by": "FRONT DOOR",
+      "smses": [
+
+      ],
+      "source": "api",
+      "tag": "Delivered",
+      "title": "1ZA2207X6791425225",
+      "tracked_count": 29,
+      "unique_token": "xJ8CBha3T",
+      "checkpoints": [
+        {
+          "slug": "ups",
+          "city": null,
+          "created_at": "2014-05-05T13:50:27+00:00",
+          "country_name": "IN",
+          "message": "BILLING INFORMATION RECEIVED",
+          "country_iso3": "IND",
+          "tag": "InfoReceived",
+          "checkpoint_time": "2014-05-04T14:06:23",
+          "coordinates": [
+
+          ],
+          "state": null,
+          "zip": null
+        },
+        {
+          "slug": "ups",
+          "city": "MUMBAI",
+          "created_at": "2014-05-05T18:19:57+00:00",
+          "country_name": "IN",
+          "message": "PICKUP SCAN",
+          "country_iso3": null,
+          "tag": "InTransit",
+          "checkpoint_time": "2014-05-05T19:56:00",
+          "coordinates": [
+
+          ],
+          "state": null,
+          "zip": null
+        },
+        {
+          "slug": "ups",
+          "city": "MUMBAI",
+          "created_at": "2014-05-06T00:30:19+00:00",
+          "country_name": "IN",
+          "message": "ORIGIN SCAN",
+          "country_iso3": null,
+          "tag": "InTransit",
+          "checkpoint_time": "2014-05-06T03:43:00",
+          "coordinates": [
+
+          ],
+          "state": null,
+          "zip": null
+        },
+        {
+          "slug": "ups",
+          "city": "MUMBAI",
+          "created_at": "2014-05-06T00:30:19+00:00",
+          "country_name": "IN",
+          "message": "DEPARTURE SCAN",
+          "country_iso3": null,
+          "tag": "InTransit",
+          "checkpoint_time": "2014-05-06T05:44:00",
+          "coordinates": [
+
+          ],
+          "state": null,
+          "zip": null
+        },
+        {
+          "slug": "ups",
+          "city": "MUMBAI",
+          "created_at": "2014-05-06T04:37:39+00:00",
+          "country_name": "IN",
+          "message": "ARRIVAL SCAN",
+          "country_iso3": null,
+          "tag": "InTransit",
+          "checkpoint_time": "2014-05-06T06:11:00",
+          "coordinates": [
+
+          ],
+          "state": null,
+          "zip": null
+        },
+        {
+          "slug": "ups",
+          "city": "MUMBAI",
+          "created_at": "2014-05-06T13:23:12+00:00",
+          "country_name": "IN",
+          "message": "DEPARTURE SCAN",
+          "country_iso3": null,
+          "tag": "InTransit",
+          "checkpoint_time": "2014-05-06T15:43:00",
+          "coordinates": [
+
+          ],
+          "state": null,
+          "zip": null
+        },
+        {
+          "slug": "ups",
+          "city": "KOELN (COLOGNE)",
+          "created_at": "2014-05-06T21:53:37+00:00",
+          "country_name": "DE",
+          "message": "ARRIVAL SCAN",
+          "country_iso3": null,
+          "tag": "InTransit",
+          "checkpoint_time": "2014-05-06T20:30:00",
+          "coordinates": [
+
+          ],
+          "state": null,
+          "zip": null
+        },
+        {
+          "slug": "ups",
+          "city": "KOELN (COLOGNE)",
+          "created_at": "2014-05-07T04:08:35+00:00",
+          "country_name": "DE",
+          "message": "DEPARTURE SCAN",
+          "country_iso3": null,
+          "tag": "InTransit",
+          "checkpoint_time": "2014-05-07T05:30:00",
+          "coordinates": [
+
+          ],
+          "state": null,
+          "zip": null
+        },
+        {
+          "slug": "ups",
+          "city": "PHILADELPHIA",
+          "created_at": "2014-05-07T13:04:20+00:00",
+          "country_name": "US",
+          "message": "ARRIVAL SCAN",
+          "country_iso3": null,
+          "tag": "InTransit",
+          "checkpoint_time": "2014-05-07T08:05:00",
+          "coordinates": [
+
+          ],
+          "state": "PA",
+          "zip": null
+        },
+        {
+          "slug": "ups",
+          "city": "PHILADELPHIA",
+          "created_at": "2014-05-07T17:36:54+00:00",
+          "country_name": "US",
+          "message": "IMPORT SCAN",
+          "country_iso3": null,
+          "tag": "InTransit",
+          "checkpoint_time": "2014-05-07T10:31:00",
+          "coordinates": [
+
+          ],
+          "state": "PA",
+          "zip": null
+        },
+        {
+          "slug": "ups",
+          "city": "PHILADELPHIA",
+          "created_at": "2014-05-08T08:54:42+00:00",
+          "country_name": "US",
+          "message": "DEPARTURE SCAN",
+          "country_iso3": null,
+          "tag": "InTransit",
+          "checkpoint_time": "2014-05-08T02:52:00",
+          "coordinates": [
+
+          ],
+          "state": "PA",
+          "zip": null
+        },
+        {
+          "slug": "ups",
+          "city": "PHILADELPHIA",
+          "created_at": "2014-05-08T08:54:42+00:00",
+          "country_name": "US",
+          "message": "ARRIVAL SCAN",
+          "country_iso3": null,
+          "tag": "InTransit",
+          "checkpoint_time": "2014-05-08T03:13:00",
+          "coordinates": [
+
+          ],
+          "state": "PA",
+          "zip": null
+        },
+        {
+          "slug": "ups",
+          "city": "PHILADELPHIA",
+          "created_at": "2014-05-08T13:22:52+00:00",
+          "country_name": "US",
+          "message": "OUT FOR DELIVERY",
+          "country_iso3": null,
+          "tag": "OutForDelivery",
+          "checkpoint_time": "2014-05-08T06:35:00",
+          "coordinates": [
+
+          ],
+          "state": "PA",
+          "zip": null
+        },
+        {
+          "slug": "ups",
+          "city": "PHILADELPHIA",
+          "created_at": "2014-05-08T16:41:11+00:00",
+          "country_name": "US",
+          "message": "DESTINATION SCAN",
+          "country_iso3": null,
+          "tag": "InTransit",
+          "checkpoint_time": "2014-05-08T06:35:00",
+          "coordinates": [
+
+          ],
+          "state": "PA",
+          "zip": null
+        },
+        {
+          "slug": "ups",
+          "city": "PHILADELPHIA",
+          "created_at": "2014-05-08T16:41:11+00:00",
+          "country_name": "US",
+          "message": "DELIVERED",
+          "country_iso3": null,
+          "tag": "Delivered",
+          "checkpoint_time": "2014-05-08T12:31:00",
+          "coordinates": [
+
+          ],
+          "state": "PA",
+          "zip": "19106"
+        }
+      ]
+    }
+  }
+}
