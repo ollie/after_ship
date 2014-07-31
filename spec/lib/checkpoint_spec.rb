@@ -12,7 +12,7 @@ RSpec.describe AfterShip::Tracking do
           checkpoints: [
             {
               slug:             'ups',
-              city:             nil,
+              city:             'Mumbai',
               created_at:       '2014-05-06T08:03:52+00:00',
               country_name:     'IN',
               message:          'BILLING INFORMATION RECEIVED',
@@ -33,6 +33,14 @@ RSpec.describe AfterShip::Tracking do
 
     it 'slug' do
       expect(@checkpoint.slug).to eq('ups')
+    end
+
+    it 'city' do
+      expect(@checkpoint.city).to eq('Mumbai')
+    end
+
+    it 'courier' do
+      expect(@checkpoint.courier).to eq('UPS')
     end
 
     it 'created_at is a DateTime' do

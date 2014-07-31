@@ -9,7 +9,19 @@ class AfterShip
     # Should always be available.
     #
     # @return [String]
-    attr_accessor :slug
+    attr_reader :slug
+
+    # Location info (if any)
+    #
+    # May be empty.
+    #
+    # @return [String]
+    attr_accessor :city
+
+    # Courier name
+    #
+    # @return [String]
+    attr_accessor :courier
 
     # Date and time of the tracking created.
     #
@@ -21,14 +33,14 @@ class AfterShip
     # Country name of the checkpoint, may also contain other location info.
     # Seems to be Alpha-2 code, e.g. +IN+, +DE+.
     #
-    # Should always be available.
+    # May be empty.
     #
     # @return [String]
     attr_accessor :country_name
 
     # Country ISO Alpha-3 (three letters) of the checkpoint.
     #
-    # May be nil.
+    # May be empty.
     #
     # @return [String]
     attr_accessor :country_iso3
@@ -70,14 +82,14 @@ class AfterShip
 
     # Location info (if any).
     #
-    # May be nil.
+    # May be empty.
     #
     # @return [String]
     attr_accessor :state
 
     # Location info (if any).
     #
-    # May be nil.
+    # May be empty.
     #
     # @return [String]
     attr_accessor :zip
@@ -87,6 +99,17 @@ class AfterShip
     # @param data [Hash] checkpoint hash
     def initialize(data)
       load_attributes(data)
+    end
+
+    # Tracking number, e.g. +1ZA2207X6794165804+.
+    #
+    # Should always be available.
+    #
+    # @return [String]
+    def slug=(value)
+      @slug        = value
+      self.courier = value.upcase
+      @slug
     end
 
     # Date and time of the tracking created.
