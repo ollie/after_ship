@@ -160,6 +160,7 @@ class AfterShip
     #
     # @param data [Hash] tracking hash
     def initialize(data)
+      @checkpoints = []
       load_attributes(data)
     end
 
