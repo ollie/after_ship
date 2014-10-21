@@ -87,7 +87,7 @@ WebMock.stub_request(
   :post,
   'https://api.aftership.com/v3/trackings'
   ).with(
-    body:    %({"tracking":{"tracking_number":"ABC123","slug":"ups","order_id":"1234"}}), # rubocop:disable Style/LineLength
+    body:    %({"tracking":{"tracking_number":"ABC123","slug":"ups","order_id":"1234"}}), # rubocop:disable Metrics/LineLength
     headers: { 'Aftership-Api-Key' => 'key' }
   ).to_return(
     status: 200,
@@ -114,7 +114,7 @@ WebMock.stub_request(
   :post,
   'https://api.aftership.com/v3/trackings'
   ).with(
-    body:    %({"tracking":{"tracking_number":"ABC123","slug":"ups","order_id":"1234"}}), # rubocop:disable Style/LineLength
+    body:    %({"tracking":{"tracking_number":"ABC123","slug":"ups","order_id":"1234"}}), # rubocop:disable Metrics/LineLength
     headers: { 'Aftership-Api-Key' => 'key' }
   ).to_return(
     status: 200,
@@ -125,7 +125,7 @@ WebMock.stub_request(
   :post,
   'https://api.aftership.com/v3/trackings'
   ).with(
-    body:    %({"tracking":{"tracking_number":"EXISTING","slug":"ups","order_id":"1234"}}), # rubocop:disable Style/LineLength
+    body:    %({"tracking":{"tracking_number":"EXISTING","slug":"ups","order_id":"1234"}}), # rubocop:disable Metrics/LineLength
     headers: { 'Aftership-Api-Key' => 'key' }
   ).to_return(
     status: 200,

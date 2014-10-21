@@ -1,2 +1,2 @@
-Style/MethodLength:
+Metrics/MethodLength:
   Max: 12

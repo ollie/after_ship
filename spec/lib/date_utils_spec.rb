@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe AfterShip::DateUtils do
+RSpec.describe DateUtils do
   context 'parse' do
     it 'empty string' do
       date = DateUtils.parse('')

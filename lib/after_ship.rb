@@ -90,6 +90,10 @@ require 'after_ship/checkpoint'
 #
 #   client.update_tracking('tracking-number', 'ups', order_id: 'external-id')
 #
+# To debug:
+#
+#   AfterShip.debug = true
+#
 # client.tracking('9405903699300211343566', 'usps') # In transit
 # client.tracking('1ZA2207X6794165804', 'ups')      # Delivered, wild
 # client.tracking('1ZA2207X6791425225', 'ups')      # Delivered, ok
@@ -123,6 +127,14 @@ class AfterShip
     'Exception'      => 'Exception',
     'Expired'        => 'Expired'
   }
+
+  class << self
+    # If debugging is turned on, it is passed to Typhoeus as "verbose" options,
+    # which is passed down to Ethon and displays request/response in STDERR.
+    #
+    # @return [Bool]
+    attr_accessor :debug
+  end
 
   attr_reader :api_key
 
@@ -243,13 +255,26 @@ class AfterShip
 
     request = Typhoeus::Request.new(
       url,
-      method: method,
-      body:   body_json,
+      method:  method,
+      verbose: self.class.debug,
+      body:    body_json,
       headers: {
         'aftership-api-key' => @api_key,
         'Content-Type'      => 'application/json'
       }
     )
+
+    if self.class.debug
+      request.on_complete do |response|
+        puts
+        puts 'Request body:'
+        puts request.options[:body]
+        puts
+        puts 'Response body:'
+        puts response.body
+        puts
+      end
+    end
 
     response = request.run
     response_to_json(response)
@@ -261,7 +286,7 @@ class AfterShip
   #
   # @return [Hash]
   #
-  # rubocop:disable Style/CyclomaticComplexity, Style/MethodLength
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength
   def response_to_json(response)
     json_response = parse_response(response)
 

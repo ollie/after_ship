@@ -37,6 +37,15 @@ RSpec.describe AfterShip do
         expect { @client.trackings }
           .to_not raise_error
       end
+
+      it 'response 200 with debug' do
+        AfterShip.debug = true
+
+        expect { @client.trackings }
+          .to_not raise_error
+
+        AfterShip.debug = nil
+      end
     end
 
     context 'tracking' do
