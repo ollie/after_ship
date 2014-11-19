@@ -1,8 +1,8 @@
 require 'typhoeus'
 require 'multi_json'
 
-require 'attributes'
-require 'date_utils'
+require 'after_ship/attributes'
+require 'after_ship/date_utils'
 require 'after_ship/version'
 require 'after_ship/tracking'
 require 'after_ship/checkpoint'
@@ -99,7 +99,7 @@ require 'after_ship/checkpoint'
 # client.tracking('1ZA2207X6791425225', 'ups')      # Delivered, ok
 # client.tracking('1ZA2207X6790326683', 'ups')      # Delivered, ok
 class AfterShip
-  class Error                   < StandardError; end
+  class Error                   < StandardError; end # Base error class
   class InvalidJSONDataError    < Error; end # 400
   class InvalidCredentialsError < Error; end # 401
   class RequestFailedError      < Error; end # 402
@@ -107,12 +107,16 @@ class AfterShip
   class InvalidArgumentError    < Error; end # 409
   class TooManyRequestsError    < Error; end # 429
   class ServerError             < Error; end # 500, 502, 503, 504
-  class UnknownError            < Error; end
+  class UnknownError            < Error; end # Huh?
 
+  # The API root URL.
   DEFAULT_API_ADDRESS = 'https://api.aftership.com/v3'
-  TRACKINGS_ENDPOINT  = "#{ DEFAULT_API_ADDRESS }/trackings"
 
-  JSON_OPTIONS        = {
+  # The trackings endpoint URL.
+  TRACKINGS_ENDPOINT = "#{ DEFAULT_API_ADDRESS }/trackings"
+
+  # Common JSON loading/dumping options.
+  JSON_OPTIONS = {
     symbolize_keys: true # Symbol keys to string keys
   }
 

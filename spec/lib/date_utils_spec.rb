@@ -1,19 +1,19 @@
 require 'spec_helper'
 
-RSpec.describe DateUtils do
+RSpec.describe AfterShip::DateUtils do
   context 'parse' do
     it 'empty string' do
-      date = DateUtils.parse('')
+      date = AfterShip::DateUtils.parse('')
       expect(date).to be_nil
     end
 
     it 'nil' do
-      date = DateUtils.parse(nil)
+      date = AfterShip::DateUtils.parse(nil)
       expect(date).to be_nil
     end
 
     it 'YYYY-MM-DD' do
-      date     = DateUtils.parse('2014-07-29')
+      date     = AfterShip::DateUtils.parse('2014-07-29')
       expected = Date.parse('2014-07-29')
       expect(date).to eq(expected)
       expect(date.to_s).to eq('2014-07-29')
@@ -21,7 +21,7 @@ RSpec.describe DateUtils do
     end
 
     it 'YYYY-MM-DDTHH:MM:SS' do
-      date     = DateUtils.parse('2014-07-29T16:08:23')
+      date     = AfterShip::DateUtils.parse('2014-07-29T16:08:23')
       expected = DateTime.parse('2014-07-29T16:08:23')
       expect(date).to eq(expected)
       expect(date.to_s).to eq('2014-07-29T16:08:23+00:00')
@@ -29,7 +29,7 @@ RSpec.describe DateUtils do
     end
 
     it 'YYYY-MM-DDTHH:MM:SSZ' do
-      date     = DateUtils.parse('2014-07-29T16:08:23Z')
+      date     = AfterShip::DateUtils.parse('2014-07-29T16:08:23Z')
       expected = DateTime.parse('2014-07-29T16:08:23Z')
       expect(date).to eq(expected)
       expect(date.to_s).to eq('2014-07-29T16:08:23+00:00')
@@ -37,7 +37,7 @@ RSpec.describe DateUtils do
     end
 
     it 'YYYY-MM-DDTHH:MM:SS+HH:MM' do
-      date     = DateUtils.parse('2014-07-29T16:08:23+02:00')
+      date     = AfterShip::DateUtils.parse('2014-07-29T16:08:23+02:00')
       expected = DateTime.parse('2014-07-29T16:08:23+02:00')
       expect(date).to eq(expected)
       expect(date.to_s).to eq('2014-07-29T16:08:23+02:00')
@@ -45,7 +45,7 @@ RSpec.describe DateUtils do
     end
 
     it 'YYYY-MM-DDTHH:MM:SS-HH:MM' do
-      date     = DateUtils.parse('2014-07-29T16:08:23-02:00')
+      date     = AfterShip::DateUtils.parse('2014-07-29T16:08:23-02:00')
       expected = DateTime.parse('2014-07-29T16:08:23-02:00')
       expect(date).to eq(expected)
       expect(date.to_s).to eq('2014-07-29T16:08:23-02:00')
@@ -53,7 +53,7 @@ RSpec.describe DateUtils do
     end
 
     it 'everything else raises an error' do
-      expect { DateUtils.parse('xxx') }.to raise_error(ArgumentError)
+      expect { AfterShip::DateUtils.parse('xxx') }.to raise_error(ArgumentError)
     end
   end
 end
