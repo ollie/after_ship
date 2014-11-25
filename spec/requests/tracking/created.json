@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "code": 201
+  },
+  "data": {
+    "tracking": {
+      "id": "547348581a374b0a3d91f2ba",
+      "created_at": "2014-11-24T15:01:44+00:00",
+      "updated_at": "2014-11-24T15:01:44+00:00",
+      "tracking_number": "1Z0659120300549388",
+      "tracking_account_number": null,
+      "tracking_postal_code": null,
+      "tracking_ship_date": null,
+      "slug": "ups",
+      "active": true,
+      "android": [
+
+      ],
+      "custom_fields": {
+      },
+      "customer_name": null,
+      "delivery_time": 0,
+      "destination_country_iso3": null,
+      "emails": [
+
+      ],
+      "expected_delivery": null,
+      "ios": [
+
+      ],
+      "note": null,
+      "order_id": "external-id",
+      "order_id_path": null,
+      "origin_country_iso3": null,
+      "shipment_package_count": 0,
+      "shipment_type": null,
+      "shipment_weight": 0,
+      "shipment_weight_unit": "",
+      "signed_by": null,
+      "smses": [
+
+      ],
+      "source": "api",
+      "tag": "Pending",
+      "title": "1Z0659120300549388",
+      "tracked_count": 0,
+      "unique_token": "Zyw-V8LlD",
+      "checkpoints": [
+
+      ]
+    }
+  }
+}

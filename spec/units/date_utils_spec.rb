@@ -12,6 +12,14 @@ RSpec.describe AfterShip::DateUtils do
       expect(date).to be_nil
     end
 
+    it 'YYYYMMDD' do
+      date     = AfterShip::DateUtils.parse('20140729')
+      expected = Date.parse('20140729')
+      expect(date).to eq(expected)
+      expect(date.to_s).to eq('2014-07-29')
+      expect(date.strftime('%Y-%m-%d %H:%M:%S')).to eq('2014-07-29 00:00:00')
+    end
+
     it 'YYYY-MM-DD' do
       date     = AfterShip::DateUtils.parse('2014-07-29')
       expected = Date.parse('2014-07-29')

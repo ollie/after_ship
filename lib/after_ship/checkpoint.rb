@@ -1,27 +1,8 @@
 class AfterShip
   # Wrapper object for AfterShip tracking checkpoint:
-  # https://www.aftership.com/docs/api/3.0/tracking/get-trackings-slug-tracking_number
+  # https://www.aftership.com/docs/api/4/trackings/get-trackings-slug-tracking_number
   class Checkpoint
     include Attributes
-
-    # Tracking number, e.g. +1ZA2207X6794165804+.
-    #
-    # Should always be available.
-    #
-    # @return [String]
-    attr_reader :slug
-
-    # Location info (if any)
-    #
-    # May be empty.
-    #
-    # @return [String]
-    attr_accessor :city
-
-    # Courier name
-    #
-    # @return [String]
-    attr_accessor :courier
 
     # Date and time of the tracking created.
     #
@@ -29,6 +10,46 @@ class AfterShip
     #
     # @return [DateTime]
     attr_reader :created_at
+
+    # The unique code of courier for this checkpoint message.
+    #
+    # Should always be available.
+    #
+    # @return [String]
+    attr_reader :slug
+
+    # Courier name.
+    #
+    # Custom method!
+    #
+    # @return [String]
+    attr_accessor :courier
+
+    # Date and time of the checkpoint, provided by courier.
+    #
+    # Empty String,
+    # YYYY-MM-DD,
+    # YYYY-MM-DDTHH:MM:SS, or
+    # YYYY-MM-DDTHH:MM:SS+TIMEZONE.
+    #
+    # Should always be available.
+    #
+    # @return [DateTime]
+    attr_reader :checkpoint_time
+
+    # Location info (if any).
+    #
+    # May be empty.
+    #
+    # @return [String]
+    attr_accessor :city
+
+    # Country ISO Alpha-3 (three letters) of the checkpoint.
+    #
+    # May be empty.
+    #
+    # @return [String]
+    attr_accessor :country_iso3
 
     # Country name of the checkpoint, may also contain other location info.
     # Seems to be Alpha-2 code, e.g. +IN+, +DE+.
@@ -38,19 +59,19 @@ class AfterShip
     # @return [String]
     attr_accessor :country_name
 
-    # Country ISO Alpha-3 (three letters) of the checkpoint.
-    #
-    # May be empty.
-    #
-    # @return [String]
-    attr_accessor :country_iso3
-
     # Checkpoint message
     #
     # Should always be available.
     #
     # @return [String]
     attr_accessor :message
+
+    # Location info (if any).
+    #
+    # May be empty.
+    #
+    # @return [String]
+    attr_accessor :state
 
     # Status of the checkpoint.
     #
@@ -73,20 +94,6 @@ class AfterShip
     # @return [String]
     attr_accessor :status
 
-    # Date and time of the checkpoint, provided by courier.
-    #
-    # Should always be available.
-    #
-    # @return [DateTime]
-    attr_reader :checkpoint_time
-
-    # Location info (if any).
-    #
-    # May be empty.
-    #
-    # @return [String]
-    attr_accessor :state
-
     # Location info (if any).
     #
     # May be empty.
@@ -101,7 +108,7 @@ class AfterShip
       load_attributes(data)
     end
 
-    # Tracking number, e.g. +1ZA2207X6794165804+.
+    # The unique code of courier for this checkpoint message.
     #
     # Should always be available.
     #

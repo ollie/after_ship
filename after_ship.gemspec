@@ -1,14 +1,14 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'after_ship/version'
+require 'after_ship/core/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'after_ship'
   spec.version       = AfterShip::VERSION
   spec.authors       = ['Oldrich Vetesnik']
   spec.email         = ['oldrich.vetesnik@gmail.com']
-  spec.summary       = 'A smallish library to talking to AfterShip via v3 API.'
+  spec.summary       = 'A smallish library to talking to AfterShip via v4 API.'
   spec.homepage      = 'https://github.com/ollie/after_ship'
   spec.license       = 'MIT'
 

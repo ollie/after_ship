@@ -1,119 +1,45 @@
+# Gems.
 require 'typhoeus'
 require 'multi_json'
 
-require 'after_ship/attributes'
-require 'after_ship/date_utils'
-require 'after_ship/version'
+# Core classes.
+require 'after_ship/core/version'
+require 'after_ship/core/attributes'
+require 'after_ship/core/date_utils'
+require 'after_ship/core/request'
+require 'after_ship/core/error'
+require 'after_ship/core/error_handler'
+
+# AfterShip classes.
 require 'after_ship/tracking'
 require 'after_ship/checkpoint'
+require 'after_ship/courier'
 
-# Init the client:
+# Quick rundown, check individual methods for more info:
 #
 #   client = AfterShip.new(api_key: 'your-aftership-api-key')
-#
-# Get a list of trackings
-# https://www.aftership.com/docs/api/3.0/tracking/get-trackings
-#
 #   client.trackings
-#
-#   # Will return list of Tracking objects:
-#
-#   [
-#     #<AfterShip::Tracking ...>,
-#     #<AfterShip::Tracking ...>,
-#     ...
-#   ]
-#
-# Get a tracking
-# https://www.aftership.com/docs/api/3.0/tracking/get-trackings-slug-tracking_number
-#
 #   client.tracking('tracking-number', 'ups')
-#
-#   # Will return Tracking object or raise AfterShip::ResourceNotFoundError
-#   # if not exists:
-#
-#   #<AfterShip::Tracking:0x007fe555bd9560
-#     @active=false,
-#     @courier="UPS",
-#     @created_at=#<DateTime: 2014-05-08T15:25:01+00:00 ...>,
-#     @updated_at=#<DateTime: 2014-07-18T09:00:47+00:00 ...>>
-#     @custom_fields={},
-#     @customer_name=nil,
-#     @destination_country_iso3="USA",
-#     @emails=[],
-#     @expected_delivery=nil,
-#     @order_id="PL-12480166",
-#     @order_id_path=nil,
-#     @origin_country_iso3="IND",
-#     @shipment_package_count=0,
-#     @shipment_type="EXPEDITED",
-#     @signed_by="FRONT DOOR",
-#     @slug="ups",
-#     @smses=[],
-#     @source="api",
-#     @status="Delivered",
-#     @tag="Delivered",
-#     @title="1ZA2207X6790326683",
-#     @tracked_count=47,
-#     @tracking_number="1ZA2207X6790326683",
-#     @unique_token="ly9ueXUJC",
-#     @checkpoints=[
-#       #<AfterShip::Checkpoint:0x007fe555bb0340
-#         @checkpoint_time=#<DateTime: 2014-05-12T14:07:00+00:00 ...>,
-#         @city="NEW YORK",
-#         @country_iso3=nil,
-#         @country_name="US",
-#         @courier="UPS",
-#         @created_at=#<DateTime: 2014-05-12T18:34:32+00:00 ...>,
-#         @message="DELIVERED",
-#         @slug="ups",
-#         @state="NY",
-#         @status="Delivered",
-#         @tag="Delivered",
-#         @zip="10075">
-#       #<AfterShip::Checkpoint ...>,
-#       ...
-#     ]>
-#
-# Create a new tracking
-# https://www.aftership.com/docs/api/3.0/tracking/post-trackings
-#
 #   client.create_tracking('tracking-number', 'ups', order_id: 'external-id')
-#
-#   # Will return Tracking object or raise AfterShip::InvalidArgumentError
-#   # if it exists:
-#
-#   #<AfterShip::Tracking ...>
-#
-# Update a tracking
-# https://www.aftership.com/docs/api/3.0/tracking/put-trackings-slug-tracking_number
-#
 #   client.update_tracking('tracking-number', 'ups', order_id: 'external-id')
+#   client.couriers
 #
 # To debug:
 #
 #   AfterShip.debug = true
 #
-# client.tracking('9405903699300211343566', 'usps') # In transit
-# client.tracking('1ZA2207X6794165804', 'ups')      # Delivered, wild
-# client.tracking('1ZA2207X6791425225', 'ups')      # Delivered, ok
-# client.tracking('1ZA2207X6790326683', 'ups')      # Delivered, ok
+# Some test trackings:
+#
+#   client.tracking('1ZA2207X0444990982', 'ups')
 class AfterShip
-  class Error                   < StandardError; end # Base error class
-  class InvalidJSONDataError    < Error; end # 400
-  class InvalidCredentialsError < Error; end # 401
-  class RequestFailedError      < Error; end # 402
-  class ResourceNotFoundError   < Error; end # 404
-  class InvalidArgumentError    < Error; end # 409
-  class TooManyRequestsError    < Error; end # 429
-  class ServerError             < Error; end # 500, 502, 503, 504
-  class UnknownError            < Error; end # Huh?
-
   # The API root URL.
-  DEFAULT_API_ADDRESS = 'https://api.aftership.com/v3'
+  DEFAULT_API_ADDRESS = 'https://api.aftership.com/v4'
 
   # The trackings endpoint URL.
   TRACKINGS_ENDPOINT = "#{ DEFAULT_API_ADDRESS }/trackings"
+
+  # The activated couriers endpoint URL.
+  COURIERS_ENDPOINT = "#{ DEFAULT_API_ADDRESS }/couriers"
 
   # Common JSON loading/dumping options.
   JSON_OPTIONS = {
@@ -140,49 +66,127 @@ class AfterShip
     attr_accessor :debug
   end
 
+  # The API key required for the AfterShip service.
+  #
+  # @return [String]
   attr_reader :api_key
 
+  # Init the client:
+  #
+  #   client = AfterShip.new(api_key: 'your-aftership-api-key')
+  #
   # @param options [Hash]
-  #   api_key [String]
+  # @option options api_key [String]
   def initialize(options)
-    require_arguments(
-      api_key: options[:api_key]
-    )
-
-    @api_key = options.delete(:api_key)
+    @api_key = options.fetch(:api_key)
   end
 
   # Get a list of trackings.
-  # https://www.aftership.com/docs/api/3.0/tracking/get-trackings
+  # https://www.aftership.com/docs/api/4/trackings/get-trackings
+  #
+  #   client.trackings
+  #
+  #   # Will return list of Tracking objects:
+  #
+  #   [
+  #     #<AfterShip::Tracking ...>,
+  #     #<AfterShip::Tracking ...>,
+  #     ...
+  #   ]
   #
   # @return [Hash]
   def trackings
-    response = request_response(TRACKINGS_ENDPOINT, {}, :get)
-    data     = response.fetch(:data).fetch(:trackings)
+    data = Request.get(url: TRACKINGS_ENDPOINT, api_key: api_key) do |response|
+      response.fetch(:data).fetch(:trackings)
+    end
 
     data.map { |datum| Tracking.new(datum) }
   end
 
   # Get a single tracking. Raises an error if not found.
-  # https://www.aftership.com/docs/api/3.0/tracking/get-trackings-slug-tracking_number
+  # https://www.aftership.com/docs/api/4/trackings/get-trackings-slug-tracking_number
+  #
+  #   client.tracking('tracking-number', 'ups')
+  #
+  #   # Will return Tracking object or raise AfterShip::Error::NotFound:
+  #
+  #   #<AfterShip::Tracking:0x007f838ef44e58
+  #     @active=false,
+  #     @android=[],
+  #     @courier="UPS",
+  #     @created_at=#<DateTime: 2014-11-19T15:16:17+00:00 ...>,
+  #     @custom_fields={},
+  #     @customer_name=nil,
+  #     @delivery_time=8,
+  #     @destination_country_iso3="USA",
+  #     @emails=[],
+  #     @expected_delivery=nil,
+  #     @id="546cb4414a1a2097122ae7b1",
+  #     @ios=[],
+  #     @order_id="PL-66448782",
+  #     @order_id_path=nil,
+  #     @origin_country_iso3="IND",
+  #     @shipment_package_count=1,
+  #     @shipment_type="UPS SAVER",
+  #     @shipment_weight=0.5,
+  #     @shipment_weight_unit="kg",
+  #     @signed_by="MET CUSTOM",
+  #     @slug="ups",
+  #     @smses=[],
+  #     @source="api",
+  #     @status="Delivered",
+  #     @tag="Delivered",
+  #     @title="1ZA2207X0490715335",
+  #     @tracked_count=6,
+  #     @tracking_account_number=nil,
+  #     @tracking_number="1ZA2207X0490715335",
+  #     @tracking_postal_code=nil,
+  #     @tracking_ship_date=nil,
+  #     @unique_token="-y6ziF438",
+  #     @updated_at=#<DateTime: 2014-11-19T22:12:32+00:00 ...>,
+  #     @checkpoints=[
+  #       #<AfterShip::Checkpoint:0x007f838ef57d50
+  #         @checkpoint_time=
+  #         #<DateTime: 2014-11-11T19:12:00+00:00 ...>,
+  #         @city="MUMBAI",
+  #         @country_iso3=nil,
+  #         @country_name="IN",
+  #         @courier="UPS",
+  #         @created_at=
+  #         #<DateTime: 2014-11-19T15:16:17+00:00 ...>,
+  #         @message="PICKUP SCAN",
+  #         @slug="ups",
+  #         @state=nil,
+  #         @status="In Transit",
+  #         @tag="InTransit",
+  #         @zip=nil>,
+  #       #<AfterShip::Checkpoint ...>,
+  #       ...
+  #     ]
+  #   >
   #
   # @param tracking_number [String]
   # @param courier [String]
   #
   # @return [Hash]
   def tracking(tracking_number, courier)
-    require_arguments(tracking_number: tracking_number, courier: courier)
-
-    url = "#{ TRACKINGS_ENDPOINT }/#{ courier }/#{ tracking_number }"
-
-    response = request_response(url, {}, :get)
-    data     = response.fetch(:data).fetch(:tracking)
+    url  = "#{ TRACKINGS_ENDPOINT }/#{ courier }/#{ tracking_number }"
+    data = Request.get(url: url, api_key: api_key) do |response|
+      response.fetch(:data).fetch(:tracking)
+    end
 
     Tracking.new(data)
   end
 
   # Create a new tracking.
-  # https://www.aftership.com/docs/api/3.0/tracking/post-trackings
+  # https://www.aftership.com/docs/api/4/trackings/post-trackings
+  #
+  #   client.create_tracking('tracking-number', 'ups', order_id: 'external-id')
+  #
+  #   # Will return Tracking object or raise
+  #   # AfterShip::Error::TrackingAlreadyExists:
+  #
+  #   #<AfterShip::Tracking ...>
   #
   # @param tracking_number [String]
   # @param courier [String]
@@ -190,22 +194,30 @@ class AfterShip
   #
   # @return [Hash]
   def create_tracking(tracking_number, courier, options = {})
-    require_arguments(tracking_number: tracking_number, courier: courier)
-
-    params = {
+    body = {
       tracking: {
         tracking_number: tracking_number,
         slug:            courier
       }.merge(options)
     }
 
-    response = request_response(TRACKINGS_ENDPOINT, params, :post)
-    data     = response.fetch(:data).fetch(:tracking)
+    data = Request.post(url: TRACKINGS_ENDPOINT, api_key: api_key,
+                        body: body) do |response|
+      response.fetch(:data).fetch(:tracking)
+    end
 
     Tracking.new(data)
   end
 
-  # https://www.aftership.com/docs/api/3.0/tracking/put-trackings-slug-tracking_number
+  # Update a tracking.
+  # https://www.aftership.com/docs/api/4/trackings/put-trackings-slug-tracking_number
+  #
+  #   client.update_tracking('tracking-number', 'ups', order_id: 'external-id')
+  #
+  #   # Will return Tracking object or raise
+  #   # AfterShip::Error::TrackingAlreadyExists:
+  #
+  #   #<AfterShip::Tracking ...>
   #
   # @param tracking_number [String]
   # @param courier [String]
@@ -213,115 +225,43 @@ class AfterShip
   #
   # @return [Hash]
   def update_tracking(tracking_number, courier, options = {})
-    require_arguments(tracking_number: tracking_number, courier: courier)
-
-    url = "#{ TRACKINGS_ENDPOINT }/#{ courier }/#{ tracking_number }"
-    params = {
+    url  = "#{ TRACKINGS_ENDPOINT }/#{ courier }/#{ tracking_number }"
+    body = {
       tracking: options
     }
 
-    response = request_response(url, params, :put)
-    data     = response.fetch(:data).fetch(:tracking)
+    data = Request.put(url: url, api_key: api_key, body: body) do |response|
+      response.fetch(:data).fetch(:tracking)
+    end
 
     Tracking.new(data)
   end
 
-  # Raises an ArgumentError if any of the args is empty or nil.
+  # Get a list of activated couriers.
+  # https://www.aftership.com/docs/api/4/couriers/get-couriers
   #
-  # @param hash [Hash] arguments needed in options
-  def require_arguments(hash)
-    hash.each do |name, value|
-      if value.respond_to?(:empty?)
-        invalid_argument!(name) if value.empty?
-      else
-        invalid_argument!(name)
-      end
-    end
-  end
-
-  protected
-
-  # @param name [Symbol]
-  def invalid_argument!(name)
-    fail ArgumentError, "Argument #{ name } cannot be empty"
-  end
-
-  # Prepare a `Typhoeus::Request`, send it over the net and deal
-  # with te response by either returning a Hash or raising an error.
+  #   client.couriers
   #
-  # @param url [String]
-  # @param body_hash [Hash]
-  # @param method [Symbol]
+  #   # Will return list of Courier objects:
+  #
+  #   [
+  #     #<AfterShip::Courier:0x007fa2771d4bf8
+  #       @name="USPS",
+  #       @other_name="United States Postal Service",
+  #       @phone="+1 800-275-8777",
+  #       @required_fields=[],
+  #       @slug="usps",
+  #       @web_url="https://www.usps.com">,
+  #     #<AfterShip::Courier ...>
+  #     ...
+  #   ]
   #
   # @return [Hash]
-  def request_response(url, body_hash, method = :get)
-    body_json = MultiJson.dump(body_hash)
-
-    request = Typhoeus::Request.new(
-      url,
-      method:  method,
-      verbose: self.class.debug,
-      body:    body_json,
-      headers: {
-        'aftership-api-key' => @api_key,
-        'Content-Type'      => 'application/json'
-      }
-    )
-
-    if self.class.debug
-      request.on_complete do |response|
-        puts
-        puts 'Request body:'
-        puts request.options[:body]
-        puts
-        puts 'Response body:'
-        puts response.body
-        puts
-      end
+  def couriers
+    data = Request.get(url: COURIERS_ENDPOINT, api_key: api_key) do |response|
+      response.fetch(:data).fetch(:couriers)
     end
 
-    response = request.run
-    response_to_json(response)
-  end
-
-  # Deal with API response, either return a Hash or raise an error.
-  #
-  # @param response [Typhoeus::Response]
-  #
-  # @return [Hash]
-  #
-  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength
-  def response_to_json(response)
-    json_response = parse_response(response)
-
-    case json_response[:meta][:code]
-    when 200, 201
-      return json_response
-    when 400
-      fail InvalidJSONDataError, json_response[:meta][:error_message]
-    when 401
-      fail InvalidCredentialsError, json_response[:meta][:error_message]
-    when 402
-      fail RequestFailedError, json_response[:meta][:error_message]
-    when 404
-      fail ResourceNotFoundError, json_response[:meta][:error_message]
-    when 409
-      fail InvalidArgumentError, json_response[:meta][:error_message]
-    when 429
-      fail TooManyRequestsError, json_response[:meta][:error_message]
-    when 500, 502, 503, 504
-      fail ServerError, json_response[:meta][:error_message]
-    else
-      fail UnknownError, json_response[:meta][:error_message]
-    end
-  end
-
-  # Parse response body into a Hash.
-  #
-  # @param response [Typhoeus::Response]
-  #
-  # @return [Hash]
-  def parse_response(response)
-    MultiJson.load(response.body, JSON_OPTIONS)
+    data.map { |datum| Courier.new(datum) }
   end
 end
