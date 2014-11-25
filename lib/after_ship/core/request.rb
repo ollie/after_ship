@@ -8,10 +8,10 @@ class AfterShip
     #   request  = Request.new(url: '...', api_key: '...', method: :get)
     #   response = request.response
     #
-    # @param  options         [Hash]
-    # @option options api_key [String]    Your API key.
-    # @option options url     [String]    The full endpoint URL.
-    # @option options body    [Hash, nil] Body for the request as a hash.
+    # @param  options          [Hash]
+    # @option options :api_key [String]    Your API key.
+    # @option options :url     [String]    The full endpoint URL.
+    # @option options :body    [Hash, nil] Body for the request as a hash.
     #
     # @return [Hash]
     def self.get(options, &block)
@@ -24,10 +24,10 @@ class AfterShip
     #   request  = Request.new(url: '...', api_key: '...', method: :post)
     #   response = request.response
     #
-    # @param  options         [Hash]
-    # @option options api_key [String]    Your API key.
-    # @option options url     [String]    The full endpoint URL.
-    # @option options body    [Hash, nil] Body for the request as a hash.
+    # @param  options          [Hash]
+    # @option options :api_key [String]    Your API key.
+    # @option options :url     [String]    The full endpoint URL.
+    # @option options :body    [Hash, nil] Body for the request as a hash.
     #
     # @return [Hash]
     def self.post(options, &block)
@@ -40,10 +40,10 @@ class AfterShip
     #   request  = Request.new(url: '...', api_key: '...', method: :put)
     #   response = request.response
     #
-    # @param  options         [Hash]
-    # @option options api_key [String]    Your API key.
-    # @option options url     [String]    The full endpoint URL.
-    # @option options body    [Hash, nil] Body for the request as a hash.
+    # @param  options          [Hash]
+    # @option options :api_key [String]    Your API key.
+    # @option options :url     [String]    The full endpoint URL.
+    # @option options :body    [Hash, nil] Body for the request as a hash.
     #
     # @return [Hash]
     def self.put(options, &block)
@@ -53,12 +53,12 @@ class AfterShip
 
     # Prepare the request to be run later.
     #
-    # @param  options         [Hash]
-    # @option options api_key [String]    Your API key.
-    # @option options url     [String]    The full endpoint URL.
-    # @option options method  [Symbol]    The HTTP method.
-    # @option options body    [Hash, nil] Body for the request as a hash.
-    # @param  block           [Proc]      Response modifier callback.
+    # @param  options          [Hash]
+    # @option options :api_key [String]    Your API key.
+    # @option options :url     [String]    The full endpoint URL.
+    # @option options :method  [Symbol]    The HTTP method.
+    # @option options :body    [Hash, nil] Body for the request as a hash.
+    # @param  block            [Proc]      Response modifier callback.
     def initialize(options = {}, &block)
       @api_key = options.fetch(:api_key)
       @url     = options.fetch(:url)

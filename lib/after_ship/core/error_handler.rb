@@ -46,10 +46,10 @@ class AfterShip
     # Check the meta code of the response. If it isn't 200 or 201, raise an
     # error.
     #
-    # @param  meta         [Hash]
-    # @option meta code    [Fixnum]
-    # @option meta message [String, nil]
-    # @option meta type    [String, nil]
+    # @param  meta          [Hash]
+    # @option meta :code    [Fixnum]
+    # @option meta :message [String, nil]
+    # @option meta :type    [String, nil]
     def check(meta)
       code = meta.fetch(:code)
 

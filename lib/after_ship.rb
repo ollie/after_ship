@@ -75,8 +75,8 @@ class AfterShip
   #
   #   client = AfterShip.new(api_key: 'your-aftership-api-key')
   #
-  # @param options [Hash]
-  # @option options api_key [String]
+  # @param  options          [Hash]
+  # @option options :api_key [String]
   def initialize(options)
     @api_key = options.fetch(:api_key)
   end
