@@ -2,40 +2,46 @@
 
 [![Build Status](https://travis-ci.org/ollie/after_ship.svg?branch=master)](https://travis-ci.org/ollie/after_ship)
 
-A smallish library to talking to AfterShip via v4 API.
+A smallish library to talking to AfterShip via v4 API. It currently supports
+those methods:
+
+* Get a list of trackings,
+* Get a particular tracking (with tracking_number + slug combination),
+* Create a tracking,
+* Update a tracking (with tracking_number + slug combination),
+* Get activated couriers.
+
+I may implement other methods if I need them or if you are interested.
 
 You will need an AfterShip API key, see here https://www.aftership.com/docs/api/4.
 The JSON is parsed by MultiJson (https://github.com/intridea/multi_json) so
 you may want to drop in your favorite JSON engine.
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'after_ship', git: 'https://github.com/ollie/after_ship.git'
-```
-
-And then execute:
-
-    $ bundle
-
 ## Usage
 
-Init the client:
+### Init the client
 
 ```ruby
 client = AfterShip.new(api_key: 'your-aftership-api-key')
 ```
 
-Get a list of trackings
-https://www.aftership.com/docs/api/4/trackings/get-trackings
+### [Get a list of trackings][trackings_url]
 
 ```ruby
-client.trackings
+trackings = client.trackings
 
-# Will return list of Tracking objects:
+trackings.each do |tracking|
+  puts tracking.tracking_number
 
+  tracking.checkpoints.each do |checkpoint|
+    puts "#{ checkpoint.city } #{ checkpoint.checkpoint_time }"
+  end
+end
+```
+
+Returns a list of `AfterShip::Tracking` objects:
+
+```
 [
   #<AfterShip::Tracking ...>,
   #<AfterShip::Tracking ...>,
@@ -43,14 +49,21 @@ client.trackings
 ]
 ```
 
-Get a tracking
-https://www.aftership.com/docs/api/4/trackings/get-trackings-slug-tracking_number
+### [Get a tracking][tracking_url]
 
 ```ruby
-client.tracking('tracking-number', 'ups')
+tracking = client.tracking('tracking-number', 'ups')
 
-# Will return Tracking object or raise AfterShip::Error::NotFound:
+puts tracking.tracking_number
 
+tracking.checkpoints.each do |checkpoint|
+  puts "#{ checkpoint.city } #{ checkpoint.checkpoint_time }"
+end
+```
+
+Returns a `AfterShip::Tracking` object or raises a `AfterShip::Error::NotFound` if not found:
+
+```
 #<AfterShip::Tracking:0x007f838ef44e58
   @active=false,
   @android=[],
@@ -107,38 +120,44 @@ client.tracking('tracking-number', 'ups')
 >
 ```
 
-Create a new tracking
-https://www.aftership.com/docs/api/4/trackings/post-trackings
+### [Create a new tracking][create_tracking_url]
 
 ```ruby
-client.create_tracking('tracking-number', 'ups', order_id: 'external-id')
+tracking = client.create_tracking('tracking-number', 'ups', order_id: 'external-id')
+```
 
-# Will return Tracking object or raise
-# AfterShip::Error::TrackingAlreadyExists:
+Returns a `AfterShip::Tracking` object or raises a `AfterShip::Error::TrackingAlreadyExists`
+if tracking already exists:
 
+```
 #<AfterShip::Tracking ...>
 ```
 
-Update a tracking
-https://www.aftership.com/docs/api/4/trackings/put-trackings-slug-tracking_number
+### [Update a tracking][update_tracking_url]
 
 ```ruby
-client.update_tracking('tracking-number', 'ups', order_id: 'external-id')
+tracking = client.update_tracking('tracking-number', 'ups', order_id: 'external-id')
+```
 
-# Will return Tracking object or raise
-# AfterShip::Error::TrackingAlreadyExists:
+Returns a `AfterShip::Tracking` object or raises a `AfterShip::Error::NotFound` if not found:
 
+```
 #<AfterShip::Tracking ...>
 ```
 
-Get activated couriers
-https://www.aftership.com/docs/api/4/couriers/get-couriers
+### [Get activated couriers][couriers_url]
 
 ```ruby
-client.couriers
+couriers = client.couriers
 
-# Will return list of Courier objects:
+couriers.each do |courier|
+  puts "#{ courier.name } #{ courier.other_name }"
+end
+```
 
+Returns a list of `AfterShip::Courier` objects:
+
+```
 [
   #<AfterShip::Courier:0x007fa2771d4bf8
     @name="USPS",
@@ -152,11 +171,69 @@ client.couriers
 ]
 ```
 
+### [Errors][errors_url]
+
+The library can respond with all of the v4 errors. The first colum is
+HTTP status code, the second meta code. The indentation indicates inheritance.
+
+```
+| HTTP | Meta | Error class                                |
+|------+------+--------------------------------------------|
+| 400  | 400  | AfterShip::Error::BadRequest               |
+| 400  | 4001 |   AfterShip::Error::InvalidJsonData        |
+| 400  | 4002 |   AfterShip::Error::InvalidJsonData        |
+| 400  | 4003 |   AfterShip::Error::TrackingAlreadyExists  |
+| 400  | 4004 |   AfterShip::Error::TrackingDoesNotExist   |
+| 400  | 4005 |   AfterShip::Error::TrackingNumberInvalid  |
+| 400  | 4006 |   AfterShip::Error::TrackingObjectRequired |
+| 400  | 4007 |   AfterShip::Error::TrackingNumberRequired |
+| 400  | 4008 |   AfterShip::Error::FieldInvalid           |
+| 400  | 4009 |   AfterShip::Error::FieldRequired          |
+| 400  | 4010 |   AfterShip::Error::SlugInvalid            |
+| 400  | 4011 |   AfterShip::Error::CourierFieldInvalid    |
+| 400  | 4012 |   AfterShip::Error::CourierNotDetected     |
+| 400  | 4013 |   AfterShip::Error::RetrackNotAllowed      |
+| 400  | 4016 |   AfterShip::Error::RetrackNotAllowed      |
+| 400  | 4014 |   AfterShip::Error::NotificationRequired   |
+| 400  | 4015 |   AfterShip::Error::IdInvalid              |
+| 401  | 401  | AfterShip::Error::Unauthorized             |
+| 403  | 403  | AfterShip::Error::Forbidden                |
+| 404  | 404  | AfterShip::Error::NotFound                 |
+| 429  | 429  | AfterShip::Error::TooManyRequests          |
+| 500  | 500  | AfterShip::Error::InternalError            |
+| 502  | 502  | AfterShip::Error::InternalError            |
+| 503  | 503  | AfterShip::Error::InternalError            |
+| 504  | 504  | AfterShip::Error::InternalError            |
+```
+
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'after_ship'
+```
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install after_ship
+
 ## Contributing
 
-0. E-mail me or create an issue
-1. Fork it (https://github.com/ollie/after_ship/fork)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+0. E-mail me or create an issue.
+1. Fork it (https://github.com/ollie/after_ship/fork).
+2. Create your feature branch (`git checkout -b my-new-feature`).
+3. Commit your changes (`git commit -am 'Add some feature'`).
+4. Push to the branch (`git push origin my-new-feature`).
+5. Create a new Pull Request.
+
+[trackings_url]:       https://www.aftership.com/docs/api/4/trackings/get-trackings
+[tracking_url]:        https://www.aftership.com/docs/api/4/trackings/get-trackings-slug-tracking_number
+[create_tracking_url]: https://www.aftership.com/docs/api/4/trackings/post-trackings
+[update_tracking_url]: https://www.aftership.com/docs/api/4/trackings/put-trackings-slug-tracking_number
+[couriers_url]:        https://www.aftership.com/docs/api/4/couriers/get-couriers
+[errors_url]:          https://www.aftership.com/docs/api/4/errors
