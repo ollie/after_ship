@@ -53,17 +53,17 @@ RSpec.describe AfterShip::Request do
 
   it 'initialize with missing :api_key raises an error' do
     expect { AfterShip::Request.new(url: 'http://bla.bla/', method: :get) }
-      .to raise_error(KeyError).with_message('key not found: :api_key')
+      .to raise_error(KeyError)
   end
 
   it 'initialize with missing :url raises an error' do
     expect { AfterShip::Request.new(api_key: 'key', method: :get) }
-      .to raise_error(KeyError).with_message('key not found: :url')
+      .to raise_error(KeyError)
   end
 
   it 'initialize with missing :method raises an error' do
     expect { AfterShip::Request.new(api_key: 'key', url: 'http://bla.bla/') }
-      .to raise_error(KeyError).with_message('key not found: :method')
+      .to raise_error(KeyError)
   end
 
   it 'get' do
