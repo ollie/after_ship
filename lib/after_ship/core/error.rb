@@ -1,6 +1,7 @@
 class AfterShip
   # Error classes.
   # https://www.aftership.com/docs/api/4/errors
+  # rubocop:disable Style/SpaceAroundOperators
   class Error < StandardError
     class BadRequest             < Error; end      # 400
     class InvalidJsonData        < BadRequest; end # 4001, 4002

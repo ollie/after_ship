@@ -58,13 +58,9 @@ class AfterShip
     #
     def parse(value)
       case value
-      when ''
+      when '', nil
         nil
-      when nil
-        nil
-      when DATE_PLAIN_REGEX
-        Date.parse(value)
-      when DATE_REGEX
+      when DATE_PLAIN_REGEX, DATE_REGEX
         Date.parse(value)
       when DATETIME_REGEX, DATETIME_WITH_ZONE_REGEX
         DateTime.parse(value)

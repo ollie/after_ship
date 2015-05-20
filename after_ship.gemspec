@@ -8,32 +8,34 @@ Gem::Specification.new do |spec|
   spec.version       = AfterShip::VERSION
   spec.authors       = ['Oldrich Vetesnik']
   spec.email         = ['oldrich.vetesnik@gmail.com']
+
   spec.summary       = 'A smallish library to talking to AfterShip via v4 API.'
   spec.homepage      = 'https://github.com/ollie/after_ship'
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files -z`.split("\x0")
-  spec.executables   = spec.files.grep(/^bin\//) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(/^(test|spec|features)\//)
+  # rubocop:disable Metrics/LineLength
+  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.bindir        = 'exe'
+  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
   # System
-  spec.add_development_dependency 'bundler', '~> 1.6'
+  spec.add_development_dependency 'bundler', '~> 1.7'
 
   # Test
-  spec.add_development_dependency 'rspec',     '~> 3.1'
-  spec.add_development_dependency 'webmock',   '~> 1.20'
-  spec.add_development_dependency 'simplecov', '~> 0.9'
+  spec.add_development_dependency 'rspec',     '~> 3.2'
+  spec.add_development_dependency 'webmock',   '~> 1.21'
+  spec.add_development_dependency 'simplecov', '~> 0.10'
 
   # Code style, debugging, docs
-  spec.add_development_dependency 'rubocop', '~> 0.27'
+  spec.add_development_dependency 'rubocop', '~> 0.31'
   spec.add_development_dependency 'pry',     '~> 0.10'
   spec.add_development_dependency 'yard',    '~> 0.8'
-  spec.add_development_dependency 'rake',    '~> 10.3'
+  spec.add_development_dependency 'rake',    '~> 10.4'
 
   # Networking
   # Fast networking
-  spec.add_runtime_dependency 'typhoeus',   '~> 0.6'
+  spec.add_runtime_dependency 'typhoeus',   '~> 0.7'
   # A common interface to multiple JSON libraries
-  spec.add_runtime_dependency 'multi_json', '~> 1.10'
+  spec.add_runtime_dependency 'multi_json', '~> 1.11'
 end

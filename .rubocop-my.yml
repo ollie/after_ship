@@ -1,2 +1,5 @@
 Metrics/MethodLength:
-  Max: 12
+  Max: 11
+
+Style/Documentation:
+  Enabled: false
