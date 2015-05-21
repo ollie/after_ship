@@ -1,6 +1,4 @@
-# AfterShip
-
-[![Build Status](https://travis-ci.org/ollie/after_ship.svg?branch=master)](https://travis-ci.org/ollie/after_ship)
+# AfterShip [![Build Status](https://travis-ci.org/ollie/after_ship.svg?branch=master)](https://travis-ci.org/ollie/after_ship) [![Code Climate](https://codeclimate.com/github/ollie/after_ship/badges/gpa.svg)](https://codeclimate.com/github/ollie/after_ship)
 
 A smallish library to talking to AfterShip via v4 API. It currently supports
 those methods:
