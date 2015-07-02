@@ -32,7 +32,7 @@ trackings.each do |tracking|
   puts tracking.tracking_number
 
   tracking.checkpoints.each do |checkpoint|
-    puts "#{ checkpoint.city } #{ checkpoint.checkpoint_time }"
+    puts "#{checkpoint.city} #{checkpoint.checkpoint_time}"
   end
 end
 ```
@@ -55,7 +55,7 @@ tracking = client.tracking('tracking-number', 'ups')
 puts tracking.tracking_number
 
 tracking.checkpoints.each do |checkpoint|
-  puts "#{ checkpoint.city } #{ checkpoint.checkpoint_time }"
+  puts "#{checkpoint.city} #{checkpoint.checkpoint_time}"
 end
 ```
 
@@ -149,7 +149,7 @@ Returns a `AfterShip::Tracking` object or raises a `AfterShip::Error::NotFound` 
 couriers = client.couriers
 
 couriers.each do |courier|
-  puts "#{ courier.name } #{ courier.other_name }"
+  puts "#{courier.name} #{courier.other_name}"
 end
 ```
 
