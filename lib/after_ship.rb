@@ -36,10 +36,10 @@ class AfterShip
   DEFAULT_API_ADDRESS = 'https://api.aftership.com/v4'
 
   # The trackings endpoint URL.
-  TRACKINGS_ENDPOINT = "#{ DEFAULT_API_ADDRESS }/trackings"
+  TRACKINGS_ENDPOINT = "#{DEFAULT_API_ADDRESS}/trackings"
 
   # The activated couriers endpoint URL.
-  COURIERS_ENDPOINT = "#{ DEFAULT_API_ADDRESS }/couriers"
+  COURIERS_ENDPOINT = "#{DEFAULT_API_ADDRESS}/couriers"
 
   # Common JSON loading/dumping options.
   JSON_OPTIONS = {
@@ -170,7 +170,7 @@ class AfterShip
   #
   # @return [Hash]
   def tracking(tracking_number, courier)
-    url  = "#{ TRACKINGS_ENDPOINT }/#{ courier }/#{ tracking_number }"
+    url  = "#{TRACKINGS_ENDPOINT}/#{courier}/#{tracking_number}"
     data = Request.get(url: url, api_key: api_key) do |response|
       response.fetch(:data).fetch(:tracking)
     end
@@ -193,6 +193,8 @@ class AfterShip
   # @param options [Hash]
   #
   # @return [Hash]
+  #
+  # rubocop:disable Metrics/MethodLength
   def create_tracking(tracking_number, courier, options = {})
     body = {
       tracking: {
@@ -225,7 +227,7 @@ class AfterShip
   #
   # @return [Hash]
   def update_tracking(tracking_number, courier, options = {})
-    url  = "#{ TRACKINGS_ENDPOINT }/#{ courier }/#{ tracking_number }"
+    url  = "#{TRACKINGS_ENDPOINT}/#{courier}/#{tracking_number}"
     body = {
       tracking: options
     }

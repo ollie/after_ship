@@ -65,7 +65,7 @@ class AfterShip
       when DATETIME_REGEX, DATETIME_WITH_ZONE_REGEX
         DateTime.parse(value)
       else
-        fail ArgumentError, "Invalid expected_delivery date #{ value.inspect }"
+        fail ArgumentError, "Invalid expected_delivery date #{value.inspect}"
       end
     end
   end

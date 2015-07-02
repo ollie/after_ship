@@ -39,7 +39,7 @@ class AfterShip
     #
     # @param response [Typhoeus::Response]
     def precheck(response)
-      fail Error::Timeout, "#{ response.effective_url } cannot be reached" if
+      fail Error::Timeout, "#{response.effective_url} cannot be reached" if
         response.timed_out?
     end
 

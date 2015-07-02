@@ -94,7 +94,7 @@ class AfterShip
     # Make the `Typhoeus::Request` to be run later.
     #
     # @return [Typhoeus::Request]
-    def typhoeus_request
+    def typhoeus_request # rubocop:disable Metrics/MethodLength
       request = Typhoeus::Request.new(
         @url,
         method:  @method,

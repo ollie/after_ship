@@ -6,7 +6,7 @@ class AfterShip
     # @param data [Hash]
     def load_attributes(data)
       data.each do |attribute, value|
-        setter = "#{ attribute }="
+        setter = "#{attribute}="
         send(setter, value) if respond_to?(setter)
       end
     end
