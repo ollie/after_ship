@@ -207,7 +207,7 @@ RSpec.describe AfterShip::Tracking do
     end
 
     it 'checkpoints' do
-      data     = {
+      data = {
         checkpoints: [
           {
             slug: 'ups'

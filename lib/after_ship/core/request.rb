@@ -70,7 +70,7 @@ class AfterShip
 
     # Do the request to the server and handle the response.
     def response
-      response    = typhoeus_response
+      response = typhoeus_response
       ErrorHandler.precheck(response)
       parsed_body = MultiJson.load(response.body, JSON_OPTIONS)
       ErrorHandler.check(parsed_body.fetch(:meta))
