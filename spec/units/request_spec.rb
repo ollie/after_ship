@@ -29,6 +29,10 @@ RSpec.describe AfterShip::Request do
     '
   end
 
+  let(:response_weird) do
+    'lolcat'
+  end
+
   let(:typhoeus_response_timeout) do
     typhoeus_response = double('Typhoeus response')
     allow(typhoeus_response).to receive(:timed_out?).and_return(true)
@@ -48,6 +52,13 @@ RSpec.describe AfterShip::Request do
     typhoeus_response = double('Typhoeus response')
     allow(typhoeus_response).to receive(:timed_out?).and_return(false)
     allow(typhoeus_response).to receive(:body).and_return(response_200)
+    typhoeus_response
+  end
+
+  let(:typhoeus_response_weird) do
+    typhoeus_response = double('Typhoeus response')
+    allow(typhoeus_response).to receive(:timed_out?).and_return(false)
+    allow(typhoeus_response).to receive(:body).and_return(response_weird)
     typhoeus_response
   end
 
@@ -144,6 +155,16 @@ RSpec.describe AfterShip::Request do
     request = AfterShip::Request.new(args)
 
     expect { request.response }.to raise_error(AfterShip::Error::Unauthorized)
+  end
+
+  it 'response raises an error on weird response' do
+    allow_any_instance_of(AfterShip::Request)
+      .to receive(:typhoeus_response).and_return(typhoeus_response_weird)
+
+    args    = { api_key: 'key', url: 'http://bla.bla/', method: :get }
+    request = AfterShip::Request.new(args)
+
+    expect { request.response }.to raise_error(AfterShip::Error::ParseError)
   end
 
   it 'response without a block' do

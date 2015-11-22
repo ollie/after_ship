@@ -26,5 +26,6 @@ class AfterShip
 
     class UnknownError           < Error; end      # Huh?
     class Timeout                < Error; end      # Uh oh.
+    class ParseError             < Error; end      # Something is wrong.
   end
 end

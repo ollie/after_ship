@@ -80,6 +80,16 @@ class AfterShip
       else
         parsed_body
       end
+    rescue MultiJson::ParseError => e
+      logger = Logger.new($stdout)
+      logger.error("#{e.class}: #{e.message}")
+
+      if response
+        logger.error('Response body:')
+        logger.error(response.body.inspect)
+      end
+
+      raise Error::ParseError, e
     end
 
     protected
