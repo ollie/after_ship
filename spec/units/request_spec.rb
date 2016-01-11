@@ -164,7 +164,10 @@ RSpec.describe AfterShip::Request do
     args    = { api_key: 'key', url: 'http://bla.bla/', method: :get }
     request = AfterShip::Request.new(args)
 
-    expect { request.response }.to raise_error(AfterShip::Error::ParseError)
+    expect { request.response }.to raise_error(
+      AfterShip::Error::InternalError,
+      'AfterShip internal error, please try again.'
+    )
   end
 
   it 'response without a block' do

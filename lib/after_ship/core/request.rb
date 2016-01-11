@@ -89,7 +89,7 @@ class AfterShip
         logger.error(response.body.inspect)
       end
 
-      raise Error::ParseError, e
+      raise Error::InternalError, 'AfterShip internal error, please try again.'
     end
 
     protected

@@ -22,10 +22,9 @@ class AfterShip
     class Forbidden              < Error; end      # 403
     class NotFound               < Error; end      # 404
     class TooManyRequests        < Error; end      # 429
-    class InternalError          < Error; end      # 500, 502, 503, 504
+    class InternalError          < Error; end      # 50x, parse errors.
 
     class UnknownError           < Error; end      # Huh?
     class Timeout                < Error; end      # Uh oh.
-    class ParseError             < Error; end      # Something is wrong.
   end
 end
