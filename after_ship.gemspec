@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   # Test
   spec.add_development_dependency 'rspec',     '~> 3.4'
   spec.add_development_dependency 'webmock',   '~> 1.22'
-  spec.add_development_dependency 'simplecov', '~> 0.10'
+  spec.add_development_dependency 'simplecov', '~> 0.11'
 
   # Code style, debugging, docs
   spec.add_development_dependency 'rubocop', '~> 0.35'
@@ -35,7 +35,7 @@ Gem::Specification.new do |spec|
 
   # Networking
   # Fast networking
-  spec.add_runtime_dependency 'typhoeus',   '~> 0.8'
+  spec.add_runtime_dependency 'typhoeus',   '~> 1.0'
   # A common interface to multiple JSON libraries
   spec.add_runtime_dependency 'multi_json', '~> 1.11'
 end
